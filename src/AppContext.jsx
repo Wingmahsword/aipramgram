@@ -13,11 +13,11 @@ const COURSES = [
 ];
 
 const REELS = [
-  { id: 'r1', creator: 'Stanford University', creatorHandle: '@stanford_ml', creatorAvatar: 'SU', title: 'Why Machine Learning is growing so fast', description: 'Exploring the exponential growth of neural compute.', likes: '18.4k', comments: '892', duration: '0:58', youtubeId: 'jGwO_UgTS7I', tags: ['ml', 'ai'] },
-  { id: 'r2', creator: '3Blue1Brown', creatorHandle: '@3blue1brown', creatorAvatar: '3B', title: 'But what is a neural network?', description: 'Visualizing the core building block of AI.', likes: '1.2M', comments: '24k', duration: '1:02', youtubeId: 'aircAruvnKk', tags: ['math', 'nn'] },
-  { id: 'r3', creator: 'FreeCodeCamp', creatorHandle: '@freecodecamp', creatorAvatar: 'FC', title: 'AI Course for Beginners', description: 'Everything you need to know about AI in 60s.', likes: '84k', comments: '2.1k', duration: '1:15', youtubeId: 'qGabmS_K_aI', tags: ['coding', 'ai'] },
-  { id: 'r4', creator: 'OpenAI', creatorHandle: '@openai', creatorAvatar: 'OA', title: 'Introducing Sora: Video Generation', description: 'Cine-realistic video from text instructions.', likes: '540k', comments: '18k', duration: '0:47', youtubeId: 'KnaWshjwItk', tags: ['sora', 'genai'] },
-  { id: 'r10', creator: 'The Verge', creatorHandle: '@verge', creatorAvatar: 'VG', title: 'Sam Altman on the Future of AGI', description: 'Insights from the center of the AI revolution.', likes: '42k', comments: '5.2k', duration: '0:50', youtubeId: 'i_LwzRVP6nE', tags: ['openai', 'agi'] },
+  { id: 'r1', creator: 'Data Expertise', creatorHandle: '@data_expertise', creatorAvatar: 'DE', title: 'Neural Networks Explained', description: 'A deep dive into node-based learning in under 60 seconds.', likes: '12', comments: '2', duration: '0:36', youtubeId: '04XBrv4OxNM', tags: ['ml', 'neuralnets'] },
+  { id: 'r2', creator: 'Ram Naresh', creatorHandle: '@ramnaresh', creatorAvatar: 'RN', title: 'Alpha-Beta Pruning Secrets', description: 'Optimize your AI decision trees with this clever algorithm.', likes: '45', comments: '5', duration: '0:45', youtubeId: 'oFuNxc49et0', tags: ['algorithms', 'ai'] },
+  { id: 'r3', creator: 'Microlearn', creatorHandle: '@micro_ai', creatorAvatar: 'ML', title: 'Start Your AI Career Right', description: 'Why projects beat tutorials for long-term growth.', likes: '82', comments: '12', duration: '0:58', youtubeId: 'cArcHKeM7xg', tags: ['career', 'strategy'] },
+  { id: 'r4', creator: 'Data Enthusiast', creatorHandle: '@data_enthusiast', creatorAvatar: 'DH', title: '2024 ML Roadmap', description: 'The exact steps to master Machine Learning this year.', likes: '124', comments: '24', duration: '1:05', youtubeId: 'PGuKUCS0A9A', tags: ['roadmap', 'learning'] },
+  { id: 'r5', creator: 'Bear Kids AI', creatorHandle: '@bear_ai', creatorAvatar: 'BK', title: 'Defining ML Simply', description: 'The fundamentals of machines that learn from data.', likes: '310', comments: '18', duration: '0:42', youtubeId: '2U3-fG_VlLY', tags: ['basics', 'ml'] },
 ];
 
 const CREATORS = [
