@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function ReelCard({ reel }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // YouTube Snippet Logic: Start at 60s, end at 75s (15s snippet)
-  const videoUrl = `https://www.youtube.com/embed/${reel.youtubeId}?autoplay=1&mute=1&controls=0&modestbranding=1&loop=1&playlist=${reel.youtubeId}&start=60&end=75`;
+  // YouTube Snippet Logic: Accelerated to 3s per video for rapid micro-previews
+  const videoUrl = `https://www.youtube.com/embed/${reel.youtubeId}?autoplay=1&mute=1&controls=0&modestbranding=1&loop=1&playlist=${reel.youtubeId}&start=60&end=63`;
 
   return (
     <motion.div 
@@ -44,7 +44,7 @@ export default function ReelCard({ reel }) {
                 frameBorder="0"
                 allow="autoplay; encrypted-media"
               ></iframe>
-              {/* Cinematic Vignette Overlay to hide player controls and frame edges */}
+              {/* Cinematic Vignette Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950 opacity-80" />
               <div className="absolute inset-0 border-[20px] border-slate-950 pointer-events-none blur-xl lg:blur-3xl opacity-60" />
             </motion.div>
@@ -54,12 +54,12 @@ export default function ReelCard({ reel }) {
         {/* Indigo Tint Overlay */}
         <div className="absolute inset-0 bg-indigo-950/20 mix-blend-overlay"></div>
         
-        {/* Progress Bar (Visual Only) */}
+        {/* Progress Bar (Visual Only) - Synced to 3 seconds */}
         <div className="absolute bottom-0 left-0 h-1 bg-white/10 w-full z-30">
            <motion.div 
              initial={{ width: 0 }}
              animate={{ width: isPlaying ? '100%' : '0%' }}
-             transition={{ duration: 15, ease: "linear" }}
+             transition={{ duration: 3, ease: "linear", repeat: Infinity }}
              className="h-full bg-[var(--accent-primary)] shadow-[0_0_10px_#7C3AED]"
            />
         </div>
