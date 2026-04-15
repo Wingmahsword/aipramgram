@@ -64,7 +64,7 @@ export default function Reels() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {reels.map((r, i) => (
+            {reels.filter(r => r.youtubeId).map((r, i) => (
               <motion.div
                 key={r.id}
                 initial={{ opacity: 0, scale: 0.9 }}
