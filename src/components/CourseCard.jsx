@@ -37,7 +37,7 @@ export default function CourseCard({ course }) {
 
       <div className="pt-8 border-t border-white/10 flex justify-between items-center">
         <div className="flex flex-col">
-          <div className="text-[14px] font-bold text-white tracking-widest uppercase">${course.price || '299'}.00</div>
+          <div className="text-[14px] font-bold text-white tracking-widest uppercase">₹{course.price || '24,999'}.00</div>
           <div className="text-[9px] text-[var(--accent-serif)] font-bold uppercase tracking-widest mt-1">REWARD: {course.rewardCoins} CREDITS</div>
         </div>
         <motion.button 
