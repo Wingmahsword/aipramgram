@@ -10,7 +10,10 @@ export default function CourseCard({ course }) {
       whileHover={{ y: -10 }}
       className="neo-depth p-8 flex flex-col border border-white/5 backdrop-blur-md bg-white/5 group cursor-pointer transition-all"
       id={`course-${course.id}`}
-      onClick={() => enrollCourse(course.id)}
+      onClick={() => {
+        enrollCourse(course.id);
+        if (course.url) window.open(course.url, '_blank');
+      }}
     >
       <div className="w-16 h-16 bg-[var(--accent-primary)] text-white shadow-[0_0_20px_rgba(124,58,237,0.3)] flex items-center justify-center mb-10 transition-transform duration-500 group-hover:rotate-[360deg] text-[28px]">
         <iconify-icon icon={course.thumbnail === 'ml' ? 'lucide:brain' : 'lucide:cpu'}></iconify-icon>
