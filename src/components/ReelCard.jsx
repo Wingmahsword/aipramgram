@@ -28,8 +28,6 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
     >
       {/* 
           REEL FRAME (Device Mockup Style)
-          Using a high-end glassmorphic border with precise corner rounding 
-          to encapsulate the content as requested.
       */}
       <div className="w-full h-full max-w-[420px] max-h-[850px] relative rounded-[48px] border-[10px] border-[#1A1A1A] shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden bg-black ring-1 ring-white/10">
         
@@ -71,7 +69,7 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
           
           {/* Interaction Overlays */}
           <div className="absolute inset-0 z-20 pointer-events-none">
-             {/* Sound Toggle */}
+             {/* Sound Toggle (Branded Audio Source) */}
              <div className="absolute top-8 right-8 pointer-events-auto">
                 <motion.button 
                   whileHover={{ scale: 1.1 }}
@@ -93,7 +91,7 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
                   </div>
                   <div>
                      <span className="block text-[13px] font-bold text-white tracking-tight leading-none mb-1">{reel.creator}</span>
-                     <span className="block text-[8px] text-[var(--accent-serif)] font-bold tracking-[0.2em] uppercase opacity-60">AI CREATOR</span>
+                     <span className="block text-[8px] text-[var(--accent-serif)] font-bold tracking-[0.2em] uppercase opacity-60">AI PARTNER</span>
                   </div>
                 </div>
                 <h4 className="clash text-[18px] text-white font-bold leading-tight mb-3 tracking-tight">
@@ -106,7 +104,7 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
                 </div>
              </div>
 
-             {/* Action Sidebar (Like, Comment, Retweet) */}
+             {/* Action Sidebar */}
              <div className="absolute right-4 bottom-28 flex flex-col gap-6 items-center pointer-events-auto">
                 {/* LIKE */}
                 <div className="flex flex-col items-center gap-1.5 cursor-pointer">
@@ -124,7 +122,7 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
                    <span className="text-[10px] font-bold text-white/80">{reel.comments}</span>
                 </div>
 
-                {/* RETWEET / REPOST */}
+                {/* RETWEET */}
                 <div className="flex flex-col items-center gap-1.5 cursor-pointer group">
                    <motion.div whileHover={{ scale: 1.2, rotate: 180 }} className="w-11 h-11 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white group-hover:text-emerald-400 transition-all">
                       <iconify-icon icon="lucide:repeat" class="text-[22px]"></iconify-icon>
@@ -132,13 +130,22 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
                    <span className="text-[9px] font-bold text-white/50 tracking-widest uppercase">RETWEET</span>
                 </div>
 
-                {/* ROTATING PROFILE */}
+                {/* 
+                    BRANDED AUDIO ICON (Replacing 'YouTube Sounds')
+                    As requested, the rotating audio source disc now features 'Our Icon' 
+                    (The EduHub Branded Brain) instead of a YouTube thumbnail.
+                */}
                 <motion.div 
                   animate={{ rotate: 360 }}
                   transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                  className="w-10 h-10 rounded-full border border-white/20 p-0.5 mt-2 shadow-[0_0_10px_rgba(255,255,255,0.1)]"
+                  className="w-11 h-11 rounded-full border border-white/20 p-[3px] mt-2 shadow-[0_0_15px_rgba(124,58,237,0.3)] bg-gradient-to-tr from-slate-900 to-black flex items-center justify-center"
                 >
-                   <img src={`https://img.youtube.com/vi/${reel.youtubeId}/default.jpg`} className="w-full h-full object-cover rounded-full scale-[2.5]" alt="profile" />
+                   <div className="w-full h-full rounded-full bg-slate-950 flex items-center justify-center border border-white/5">
+                      <iconify-icon 
+                        icon="hugeicons:brain-02" 
+                        class="text-[18px] text-[var(--accent-primary)] drop-shadow-[0_0_5px_var(--accent-primary)]"
+                      ></iconify-icon>
+                   </div>
                 </motion.div>
              </div>
           </div>
