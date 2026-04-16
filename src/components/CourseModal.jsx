@@ -172,10 +172,10 @@ export default function CourseModal({ course, onClose }) {
                 whileHover={{ scale: 1.04, backgroundColor: enrolled ? 'rgba(124,58,237,0.5)' : 'var(--accent-primary)' }}
                 whileTap={{ scale: 0.97 }}
                 onClick={handleEnroll}
-                className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-8 py-3.5 text-white text-[11px] font-bold tracking-[0.15em] uppercase rounded-xl border transition-all ${
+                className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 sm:px-8 sm:py-3.5 text-white text-[10px] sm:text-[11px] font-bold tracking-[0.12em] sm:tracking-[0.15em] uppercase rounded-xl border transition-all ${
                   enrolled
                     ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/25 text-[var(--accent-serif)]'
-                    : 'border-transparent bg-[var(--accent-primary)] shadow-[0_0_24px_rgba(124,58,237,0.4)]'
+                    : 'border-[var(--accent-primary)]/35 bg-[var(--accent-primary)]/30 backdrop-blur-md sm:border-transparent sm:bg-[var(--accent-primary)] sm:shadow-[0_0_24px_rgba(124,58,237,0.4)]'
                 }`}
               >
                 {enrolled ? '✓ ENROLLED' : `ENROLL — ₹${course.price}`}
