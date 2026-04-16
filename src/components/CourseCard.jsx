@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../AppContext';
 import { motion } from 'framer-motion';
+import CourseModal from './CourseModal';
 
 const THUMBNAIL_ICONS = {
   ml:     'lucide:brain',
@@ -19,6 +20,7 @@ const LEVEL_COLORS = {
 export default function CourseCard({ course }) {
   const { enrollCourse, enrolledCourses } = useApp();
   const enrolled = enrolledCourses.includes(course.id);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleEnroll = (e) => {
     e.stopPropagation();
@@ -31,9 +33,12 @@ export default function CourseCard({ course }) {
   };
 
   return (
+    <>
+    {modalOpen && <CourseModal course={course} onClose={() => setModalOpen(false)} />}
     <motion.div 
-      whileHover={{ y: -8 }}
-      className="neo-depth p-8 flex flex-col border border-white/5 backdrop-blur-md bg-white/5 group transition-all"
+      whileHover={{ y: -8, borderColor: 'rgba(124,58,237,0.4)' }}
+      onClick={() => setModalOpen(true)}
+      className="neo-depth p-8 flex flex-col border border-white/5 backdrop-blur-md bg-white/5 group transition-all cursor-pointer"
       id={`course-${course.id}`}
     >
       <div className="flex items-start justify-between mb-8">
@@ -59,11 +64,12 @@ export default function CourseCard({ course }) {
         {course.description}
       </p>
 
-      <div className="flex items-center gap-3 mb-6 text-[10px] text-white/30 font-mono">
+      <div className="flex items-center gap-3 mb-2 text-[10px] text-white/30 font-mono">
         <span>⏱ {course.duration}</span>
         <span className="w-1 h-1 bg-white/20 rounded-full"></span>
-        <span>🏆 {course.rewardCoins} CREDITS</span>
+        <span>🏆 {course.rewardCoins} pts</span>
       </div>
+      <div className="text-[18px] font-bold clash text-white mb-4">₹{course.price}</div>
 
       <div className="pt-6 border-t border-white/10 flex gap-3">
         <motion.button
@@ -90,5 +96,6 @@ export default function CourseCard({ course }) {
         </motion.button>
       </div>
     </motion.div>
+    </>
   );
 }
