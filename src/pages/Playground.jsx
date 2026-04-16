@@ -80,7 +80,7 @@ export default function Playground() {
     if (!text || sending) return;
     setInput('');
     setSending(true);
-    await sendMessage(text);
+    await sendMessage(text, activeModel.id);
     setSending(false);
     inputRef.current?.focus();
   };
@@ -254,7 +254,7 @@ export default function Playground() {
               </motion.button>
             </div>
             <div className="text-[9px] text-white/20 font-mono mt-2 text-center tracking-widest uppercase">
-              Press Enter to send · Shift+Enter for new line · {activeModel.org} model simulated locally
+              Press Enter to send · Shift+Enter for new line · Answers by {activeModel.name}
             </div>
           </div>
         </motion.div>
@@ -268,7 +268,7 @@ export default function Playground() {
         >
           {[
             { label: 'Context Window', value: '128k tokens' },
-            { label: 'Response Mode', value: 'Simulated' },
+            { label: 'Response Mode', value: 'Active Q&A' },
             { label: 'Topics',         value: 'ML · DL · LLMs' },
             { label: 'Models Online',  value: `${MODELS.length} bots` },
           ].map(({ label, value }) => (

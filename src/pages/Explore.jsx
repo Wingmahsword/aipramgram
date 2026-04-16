@@ -13,7 +13,7 @@ const categories = [
 ];
 
 export default function Explore() {
-  const { courses } = useApp();
+  const { courses, comprehensiveModules } = useApp();
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -128,6 +128,60 @@ export default function Explore() {
       {/* Main Catalog Grid */}
       <main className="px-6 sm:px-12 lg:px-20 py-24 relative z-10">
         <div className="max-w-[1400px] mx-auto">
+          <div className="mb-20">
+            <div className="flex items-center justify-between mb-8 px-4">
+              <div className="text-[11px] font-bold tracking-[0.35em] uppercase text-[var(--accent-primary)] flex items-center gap-3">
+                <span className="w-8 h-px bg-[var(--accent-primary)]"></span>
+                Comprehensive Modules
+              </div>
+              <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40">3-6 months · Certification + Job Assurance</div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {comprehensiveModules.map((module, i) => (
+                <motion.article
+                  key={module.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08, duration: 0.45 }}
+                  className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-7"
+                >
+                  <div className="flex items-start justify-between gap-4 mb-5">
+                    <h3 className="clash text-[24px] leading-tight uppercase text-white">{module.title}</h3>
+                    <span className="px-3 py-1 text-[9px] font-bold tracking-[0.15em] uppercase rounded-full border border-[var(--accent-primary)]/30 bg-[var(--accent-primary)]/15 text-[var(--accent-serif)] whitespace-nowrap">
+                      {module.duration}
+                    </span>
+                  </div>
+
+                  <div className="space-y-3 mb-6">
+                    <div className="text-[12px] text-white/80"><span className="text-[var(--accent-primary)] font-bold">Certification:</span> {module.certification}</div>
+                    <div className="text-[12px] text-white/80"><span className="text-[var(--accent-primary)] font-bold">Job Assurance:</span> {module.jobAssurance}</div>
+                  </div>
+
+                  <div className="mb-6">
+                    <div className="text-[9px] font-bold tracking-[0.18em] uppercase text-white/35 mb-2">Includes</div>
+                    <div className="flex flex-wrap gap-2">
+                      {module.includes.map(item => (
+                        <span key={item} className="px-2.5 py-1 text-[10px] border border-white/10 rounded-full text-white/70 bg-white/5">{item}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pt-5 border-t border-white/10 flex items-end justify-between">
+                    <div>
+                      <div className="text-[28px] clash font-bold text-white">₹{module.price}</div>
+                      <div className="text-[9px] tracking-[0.2em] uppercase text-[var(--accent-serif)]">Complete Track</div>
+                    </div>
+                    <button className="px-5 py-3 text-[10px] font-bold tracking-[0.15em] uppercase rounded-xl bg-[var(--accent-primary)] text-white border border-transparent hover:brightness-110 transition-all">
+                      Apply Now
+                    </button>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+
           <div className="flex items-center justify-between mb-16 px-4">
             <div className="text-[11px] font-bold tracking-[0.4em] uppercase text-[var(--accent-serif)] flex items-center gap-4">
               <span className="w-2 h-2 bg-[var(--accent-primary)] rounded-full"></span>

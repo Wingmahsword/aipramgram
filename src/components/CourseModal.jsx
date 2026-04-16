@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../AppContext';
 
@@ -40,7 +41,7 @@ export default function CourseModal({ course, onClose }) {
   const handleEnroll = () => { enrollCourse(course.id); };
   const handleWatch  = () => { if (course.url) window.open(course.url, '_blank'); };
 
-  return (
+  return createPortal(
     <AnimatePresence>
       <motion.div
         key="overlay"
@@ -49,7 +50,7 @@ export default function CourseModal({ course, onClose }) {
         animate="visible"
         exit="exit"
         onClick={onClose}
-        className="fixed inset-0 z-[200] flex items-center justify-center px-4"
+        className="fixed inset-0 z-[200] flex items-center justify-center px-4 py-6 overflow-y-auto"
         style={{ background: 'rgba(2,6,23,0.85)', backdropFilter: 'blur(12px)' }}
       >
         <motion.div
@@ -59,7 +60,7 @@ export default function CourseModal({ course, onClose }) {
           animate="visible"
           exit="exit"
           onClick={e => e.stopPropagation()}
-          className="relative w-full max-w-[700px] max-h-[90vh] overflow-y-auto rounded-2xl border border-white/10 bg-[#070d1a] shadow-[0_40px_120px_rgba(0,0,0,0.9)]"
+          className="relative w-full max-w-[760px] my-auto max-h-[calc(100vh-3rem)] overflow-y-auto rounded-2xl border border-white/10 bg-[#070d1a] shadow-[0_40px_120px_rgba(0,0,0,0.9)]"
           style={{ scrollbarWidth: 'none' }}
         >
           {/* Top accent bar */}
@@ -104,6 +105,13 @@ export default function CourseModal({ course, onClose }) {
             <motion.p variants={itemVariants} className="text-[15px] text-[var(--text-muted)] leading-relaxed font-medium">
               {course.description}
             </motion.p>
+
+            <motion.div variants={itemVariants} className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
+              <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-[var(--accent-serif)] mb-1">Supported by</div>
+              <div className="text-[12px] text-white/75 font-medium leading-relaxed">
+                {course.partner}, hiring partners network, and mentor-led review board
+              </div>
+            </motion.div>
 
             {/* Meta row */}
             <motion.div variants={itemVariants} className="grid grid-cols-3 gap-4">
@@ -176,7 +184,8 @@ export default function CourseModal({ course, onClose }) {
           </div>
         </motion.div>
       </motion.div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 

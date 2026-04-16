@@ -7,14 +7,9 @@ import CourseCard from '../components/CourseCard';
 const springFast   = { type: "spring", stiffness: 400, damping: 30 };
 const springSmooth = { type: "spring", stiffness: 100, damping: 20 };
 
-const CARD_W   = 380; // px per card
-const CARD_GAP = 32;  // gap-8 = 32px
-
 export default function Home() {
   const { courses } = useApp();
   const containerRef  = useRef(null);
-  const carouselRef   = useRef(null);
-  const wrapperRef    = useRef(null);
   
   // Hardware-accelerated Parallax Hooks (No React State Re-renders)
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
@@ -92,47 +87,20 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Draggable Course Carousel Section */}
+      {/* Scrollable Course Carousel Section */}
       <motion.section style={{ y: cardSectionY }} className="py-20 relative z-20">
         <div className="max-w-[1400px] mx-auto mb-12 px-6 sm:px-12 lg:px-20">
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-[11px] font-bold tracking-[0.4em] uppercase text-[var(--accent-primary)] mb-6 flex items-center gap-4">
             <span className="w-12 h-[1px] bg-[var(--accent-primary)]"></span>
             <h2 className="m-0">Neural Registry</h2>
           </motion.div>
-          <div className="flex items-end justify-between">
-            <motion.h3 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-title text-[clamp(40px,8vw,100px)]">
-              LIVE MODULES
-            </motion.h3>
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="hidden sm:flex items-center gap-2 mb-4 text-[10px] text-white/30 font-mono uppercase tracking-widest"
-            >
-              <motion.span
-                animate={{ x: [0, 8, 0] }}
-                transition={{ repeat: Infinity, duration: 1.4, ease: 'easeInOut' }}
-              >←</motion.span>
-              drag to scroll
-              <motion.span
-                animate={{ x: [0, 8, 0] }}
-                transition={{ repeat: Infinity, duration: 1.4, ease: 'easeInOut' }}
-              >→</motion.span>
-            </motion.div>
-          </div>
+          <motion.h3 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-title text-[clamp(40px,8vw,100px)]">
+            LIVE MODULES
+          </motion.h3>
         </div>
 
-        {/* Overflow wrapper with ref for drag constraints */}
-        <div ref={wrapperRef} className="overflow-hidden cursor-grab active:cursor-grabbing pb-12 pl-6 sm:pl-12 lg:pl-20">
-          <motion.div
-            ref={carouselRef}
-            drag="x"
-            dragConstraints={wrapperRef}
-            dragElastic={0.08}
-            dragTransition={{ bounceStiffness: 400, bounceDamping: 30 }}
-            whileDrag={{ cursor: 'grabbing' }}
-            className="flex gap-8 w-max"
-          >
+        <div className="overflow-x-auto overflow-y-visible pb-12 pl-6 sm:pl-12 lg:pl-20 pr-6 sm:pr-12 lg:pr-20 hide-scrollbar">
+          <div className="flex gap-8 w-max">
             {courses.slice(0, 10).map((course, i) => (
               <motion.article
                 key={course.id}
@@ -145,7 +113,7 @@ export default function Home() {
                 <CourseCard course={course} />
               </motion.article>
             ))}
-          </motion.div>
+          </div>
         </div>
       </motion.section>
     </main>

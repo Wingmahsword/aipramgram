@@ -59,13 +59,73 @@ const CREATORS = [
   { id: 'c3', name: 'Andrew Ng', handle: '@andrewng', avatar: 'AN', bio: 'Founder of DeepLearning.AI. Landing AI CEO.', followers: 1200000, courses: 25, reels: 89, verified: true, specialty: 'Machine Learning' },
 ];
 
-const AI_RESPONSES = [
-  "That's a great question! In machine learning, **gradient descent** is an optimization algorithm used to minimize the loss function by iteratively moving in the direction of steepest descent. 📉\n\nThe learning rate controls how big each step is — too large and you overshoot, too small and training takes forever.",
-  "**Transformers** revolutionized NLP! The key innovation is the **attention mechanism**, which allows the model to weigh the importance of different words in the input when generating each output token. Unlike RNNs, transformers process all tokens in parallel. ⚡",
-  "For **prompt engineering**, here are 5 power techniques:\n1. **Role prompting** — Tell the AI to act as an expert\n2. **Chain-of-thought** — Ask it to think step by step\n3. **Few-shot examples** — Show 2-3 examples before your ask\n4. **Temperature control** — Lower for precision, higher for creativity\n5. **Structured output** — Ask for JSON or bullet points",
-  "**RAG (Retrieval-Augmented Generation)** vs **Fine-tuning**:\n\n• RAG is great when you need up-to-date info or domain knowledge without retraining\n• Fine-tuning is better when you need specific tone, style, or task behavior baked in\n\nFor most production apps, start with RAG — it's faster and cheaper! 🚀",
-  "Great question about **neural network layers**! Each layer learns increasingly abstract representations:\n- Early layers: edges, textures\n- Mid layers: shapes, patterns  \n- Deep layers: complex concepts, objects\n\nThis hierarchical feature learning is why deep networks are so powerful for vision tasks! 🧠",
+const COMPREHENSIVE_MODULES = [
+  {
+    id: 'bundle_ai_engineer_pro',
+    title: 'AI Engineer Pro Track',
+    duration: '6 months',
+    price: 249,
+    certification: 'Industry-verified completion certificate',
+    jobAssurance: 'Interview guarantee + placement support',
+    supportedBy: ['DAIR.AI', 'Hiring Partner Network', 'Mentor Board'],
+    includes: ['Machine Learning', 'Deep Learning', 'Generative AI', 'AI Applications'],
+  },
+  {
+    id: 'bundle_llm_developer',
+    title: 'LLM Developer Career Track',
+    duration: '4 months',
+    price: 229,
+    certification: 'Project-backed LLM developer certification',
+    jobAssurance: 'Portfolio review + 1:1 hiring referrals',
+    supportedBy: ['DAIR.AI', 'LMS Partner Ecosystem'],
+    includes: ['Prompt Engineering', 'Generative AI', 'AI Applications'],
+  },
+  {
+    id: 'bundle_ml_foundations',
+    title: 'ML Foundations to Deployment',
+    duration: '3 months',
+    price: 199,
+    certification: 'Foundation ML Certificate + capstone badge',
+    jobAssurance: 'Resume build + mock interviews',
+    supportedBy: ['DAIR.AI', 'Academic Review Mentors'],
+    includes: ['Machine Learning', 'Deep Learning'],
+  },
 ];
+
+const MODEL_PREFIX = {
+  gpt4o: 'GPT-4o',
+  claude35: 'Claude 3.5',
+  gemini: 'Gemini Pro',
+  mistral: 'Mistral 7B',
+  llama3: 'Llama 3',
+};
+
+function generateAiReply(question, modelId = 'gpt4o') {
+  const text = question.toLowerCase();
+  const model = MODEL_PREFIX[modelId] || 'AI Model';
+
+  if (text.includes('gradient descent')) {
+    return `[${model}] Gradient descent updates model weights to minimize loss:\n\nθ = θ - α * ∇J(θ)\n\n- α (learning rate) controls step size\n- Too high: unstable training\n- Too low: slow convergence\n\nUse learning-rate scheduling + normalization for better results.`;
+  }
+
+  if (text.includes('attention') || text.includes('transformer')) {
+    return `[${model}] Attention lets each token look at every other token and weigh relevance:\n\nAttention(Q,K,V) = softmax(QKᵀ/√d)V\n\nWhy it helps:\n- Captures long-range dependencies\n- Parallelizable vs RNNs\n- Powers LLM reasoning and context handling.`;
+  }
+
+  if (text.includes('rag')) {
+    return `[${model}] RAG pipeline:\n1) Embed query\n2) Retrieve top-k chunks from vector DB\n3) Inject context into prompt\n4) Generate grounded answer\n\nBest for up-to-date knowledge and enterprise docs without retraining base weights.`;
+  }
+
+  if (text.includes('prompt')) {
+    return `[${model}] Prompt framework you can use immediately:\n\n- Role: “You are an ML tutor”\n- Goal: clear objective\n- Constraints: length/format\n- Examples: 1-2 few-shot samples\n- Output schema: JSON or bullets\n\nThis dramatically improves consistency.`;
+  }
+
+  if (text.includes('cnn') || text.includes('convolution')) {
+    return `[${model}] CNNs are strong for spatial image patterns; Transformers are stronger for long-range/global dependencies.\n\nRule of thumb:\n- Limited data + smaller compute → CNNs\n- Large-scale pretraining + multimodal stacks → Transformers`;
+  }
+
+  return `[${model}] Good question — here's a direct breakdown:\n\n${question}\n\n- Core idea: identify objective, data, and constraints\n- Practical step: start with baseline, evaluate, then iterate\n- Production step: monitor drift, latency, and quality metrics\n\nIf you want, I can turn this into a step-by-step roadmap.`;
+}
 
 const AppContext = createContext(null);
 
@@ -114,24 +174,26 @@ export function AppProvider({ children }) {
     addToast(`+${reward} coins earned for enrolling in "${course?.title}"!`, '🪙');
     return { coinsEarned: reward };
   };
-  const sendMessage = async (text) => {
+  const sendMessage = async (text, modelId = 'gpt4o') => {
     const userMsg = { role: 'user', content: text };
     setMessages(prev => [...prev, userMsg, { role: 'thinking' }]);
     await new Promise(r => setTimeout(r, 900 + Math.random() * 600));
-    const reply = AI_RESPONSES[Math.floor(Math.random() * AI_RESPONSES.length)];
-    setMessages(prev => [...prev.filter(m => m.role !== 'thinking'), { role: 'assistant', content: reply }]);
+    const reply = generateAiReply(text, modelId);
+    setMessages(prev => [...prev.filter(m => m.role !== 'thinking'), { role: 'assistant', content: reply, model: modelId }]);
   };
 
   const courses = COURSES.map(c => ({ ...c, enrolled: enrolledCourses.includes(c.id) }));
   const reels = REELS.map(r => ({ ...r, liked: likedReels.includes(r.id), saved: savedReels.includes(r.id) }));
   const creators = CREATORS.map(c => ({ ...c, following: followingCreators.includes(c.id) }));
+  const comprehensiveModules = COMPREHENSIVE_MODULES;
 
   return (
     <AppContext.Provider value={{
-      courses, reels, creators, coins, hasClaimedWelcome, messages, toasts,
+      courses, reels, creators, comprehensiveModules, coins, hasClaimedWelcome, messages, toasts,
       courseFilter, setCourseFilter, searchQuery, setSearchQuery,
       claimWelcomeBonus, toggleLike, toggleSave, toggleFollow, enrollCourse, sendMessage,
-      enrolledCourses, likedReels, savedReels, followingCreators
+      enrolledCourses, likedReels, savedReels, followingCreators,
+      isMuted, setIsMuted
     }}>
       {children}
     </AppContext.Provider>
