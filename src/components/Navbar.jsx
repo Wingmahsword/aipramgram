@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 export default function Navbar() {
   const { scrollY } = useScroll();
   const location = useLocation();
+  const [hideOnReels, setHideOnReels] = useState(false);
 
   const headerHeight = useTransform(scrollY, [0, 100], [120, 90]);
   const headerBg = useTransform(scrollY, [0, 100], ['rgba(2, 6, 23, 0)', 'rgba(2, 6, 23, 0.85)']);
@@ -12,9 +13,31 @@ export default function Navbar() {
   const logoScale = useTransform(scrollY, [0, 100], [1, 0.85]);
 
   const isExplore = location.pathname === '/courses';
+  const isReels = location.pathname === '/reels';
+
+  useEffect(() => {
+    if (!isReels) {
+      setHideOnReels(false);
+      return;
+    }
+
+    const handleReelScroll = (event) => {
+      const { direction, atTop } = event.detail || {};
+      if (atTop || direction === 'up') {
+        setHideOnReels(false);
+      } else if (direction === 'down') {
+        setHideOnReels(true);
+      }
+    };
+
+    window.addEventListener('reels-scroll', handleReelScroll);
+    return () => window.removeEventListener('reels-scroll', handleReelScroll);
+  }, [isReels]);
 
   return (
     <motion.header 
+      animate={{ y: hideOnReels ? '-120%' : 0 }}
+      transition={{ duration: 0.28, ease: 'easeOut' }}
       style={{ height: headerHeight, backgroundColor: headerBg }}
       className="fixed top-0 left-0 right-0 z-[1000] flex items-center justify-between px-6 sm:px-12 lg:px-20 transition-all border-b border-transparent backdrop-blur-md"
     >

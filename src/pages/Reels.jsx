@@ -7,12 +7,27 @@ export default function Reels() {
   const { reels } = useApp();
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef(null);
+  const lastScrollTopRef = useRef(0);
+
+  useEffect(() => {
+    return () => {
+      window.dispatchEvent(new CustomEvent('reels-scroll', { detail: { direction: 'up', atTop: true } }));
+    };
+  }, []);
 
   // Monitor scroll to determine active video for predictive pre-loading
   const handleScroll = (e) => {
     const scrollPosition = e.target.scrollTop;
-    const windowHeight = window.innerHeight;
-    const index = Math.round(scrollPosition / windowHeight);
+    const viewportHeight = e.target.clientHeight || window.innerHeight;
+    const index = Math.round(scrollPosition / viewportHeight);
+
+    const direction = scrollPosition > lastScrollTopRef.current ? 'down' : 'up';
+    const atTop = scrollPosition < 20;
+    if (Math.abs(scrollPosition - lastScrollTopRef.current) > 4) {
+      window.dispatchEvent(new CustomEvent('reels-scroll', { detail: { direction, atTop } }));
+    }
+    lastScrollTopRef.current = scrollPosition;
+
     if (index !== activeIndex) {
       setActiveIndex(index);
     }
@@ -38,11 +53,11 @@ export default function Reels() {
       <section 
         ref={containerRef}
         onScroll={handleScroll}
-        className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth hide-scrollbar relative bg-black"
+        className="h-screen overflow-y-scroll overscroll-y-contain snap-y snap-mandatory scroll-smooth hide-scrollbar relative bg-black"
       >
         {reels.filter(r => r.youtubeId).map((r, i) => (
-          <div key={r.id} className="h-screen w-full snap-start snap-always flex items-center justify-center bg-black overflow-hidden relative">
-            <div className="w-full max-w-[500px] h-full relative">
+          <div key={r.id} className="h-screen w-full snap-start snap-always flex items-center justify-center bg-black overflow-hidden relative px-2 sm:px-3">
+            <div className="w-full max-w-[460px] h-full relative flex items-center justify-center">
                <ReelCard 
                  reel={r} 
                  isActive={i === activeIndex} 

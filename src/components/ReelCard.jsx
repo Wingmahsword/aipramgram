@@ -47,12 +47,12 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="w-full h-full bg-black relative overflow-hidden flex flex-col items-center justify-center snap-center p-4 transition-all duration-500"
+      className="w-full h-full bg-black relative overflow-hidden flex flex-col items-center justify-center snap-center p-2 sm:p-4 transition-all duration-500"
     >
       {/* 
           REEL FRAME (Device Mockup Style)
       */}
-      <div className="w-full h-full max-w-[420px] max-h-[850px] relative rounded-[48px] border-[10px] border-[#1A1A1A] shadow-[0_0_80px_rgba(0,0,0,0.9)] overflow-hidden bg-black ring-1 ring-white/10 group">
+      <div className="relative h-[calc(100vh-1rem)] max-h-[860px] aspect-[9/16] w-auto max-w-full rounded-[36px] sm:rounded-[48px] border-[8px] sm:border-[10px] border-[#1A1A1A] shadow-[0_0_80px_rgba(0,0,0,0.9)] overflow-hidden bg-black ring-1 ring-white/10 group">
         
         {/* Clickable Area for Play/Pause */}
         <div 
@@ -84,7 +84,7 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
               >
                 <iframe
                   ref={iframeRef}
-                  className="w-full h-[150%] -top-[25%] absolute pointer-events-none scale-[2.2] origin-center object-cover"
+                  className="absolute top-0 left-1/2 h-full w-[177.78%] -translate-x-1/2 pointer-events-none"
                   src={videoUrl}
                   title="Neural Reel"
                   frameBorder="0"
@@ -114,7 +114,7 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
              </AnimatePresence>
 
              {/* Sound Toggle (Branded Audio Source) */}
-             <div className="absolute top-8 right-8 pointer-events-auto">
+             <div className="absolute top-5 right-5 sm:top-8 sm:right-8 pointer-events-auto">
                 <motion.button 
                   whileHover={{ scale: 1.15, rotate: 5 }}
                   whileTap={{ scale: 0.85 }}
@@ -122,14 +122,14 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
                     e.stopPropagation(); // Don't trigger pause when clicking sound
                     setIsMuted(!isMuted);
                   }}
-                  className={`w-12 h-12 rounded-full backdrop-blur-2xl border flex items-center justify-center text-white text-[20px] shadow-2xl transition-all ${isMuted ? 'bg-red-500/20 border-red-500/50' : 'bg-white/10 border-white/20'}`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full backdrop-blur-2xl border flex items-center justify-center text-white text-[18px] sm:text-[20px] shadow-2xl transition-all ${isMuted ? 'bg-red-500/20 border-red-500/50' : 'bg-white/10 border-white/20'}`}
                 >
                    <iconify-icon icon={isMuted ? 'lucide:volume-x' : 'lucide:volume-2'}></iconify-icon>
                 </motion.button>
              </div>
 
              {/* HUD Bottom Info */}
-             <div className="absolute inset-x-0 bottom-0 p-8 pb-12 bg-gradient-to-t from-black/95 via-black/20 to-transparent pointer-events-auto">
+             <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8 pb-9 sm:pb-12 bg-gradient-to-t from-black/95 via-black/20 to-transparent pointer-events-auto">
                 <div className="flex items-center gap-3 mb-4">
                    <motion.div whileHover={{ scale: 1.1 }} className="w-10 h-10 rounded-full bg-gradient-to-tr from-[var(--accent-primary)] to-indigo-400 p-[2px] shadow-lg">
                       <div className="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-[11px] font-black text-white uppercase">
@@ -141,7 +141,7 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
                       <span className="block text-[8px] text-[var(--accent-serif)] font-bold tracking-[0.25em] uppercase opacity-80">AI ARCHITECT</span>
                    </div>
                 </div>
-                <h4 className="clash text-[18px] text-white font-bold leading-tight mb-4 tracking-tight max-w-[85%] drop-shadow-md">
+                <h4 className="clash text-[16px] sm:text-[18px] text-white font-bold leading-tight mb-4 tracking-tight max-w-[85%] drop-shadow-md">
                    {reel.title}
                 </h4>
                 <div className="flex gap-2.5 flex-wrap">
@@ -152,7 +152,7 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
              </div>
 
              {/* Action Sidebar */}
-             <div className="absolute right-4 bottom-28 flex flex-col gap-6 items-center pointer-events-auto">
+             <div className="absolute right-3 sm:right-4 bottom-24 sm:bottom-28 flex flex-col gap-5 sm:gap-6 items-center pointer-events-auto">
                 {/* LIKE */}
                 <div className="flex flex-col items-center gap-1.5 cursor-pointer group">
                    <motion.div whileHover={{ scale: 1.2, y: -2 }} className="w-12 h-12 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 flex items-center justify-center text-white transition-all group-hover:text-red-500 group-hover:border-red-500/50 group-hover:bg-red-500/10">

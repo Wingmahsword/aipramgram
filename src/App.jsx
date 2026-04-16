@@ -11,6 +11,7 @@ import Playground from './pages/Playground';
 
 function App() {
   const location = useLocation();
+  const isReels = location.pathname === '/reels';
 
   return (
     <AppProvider>
@@ -24,7 +25,7 @@ function App() {
             <Route path="/playground" element={<Playground />} />
           </Routes>
         </AnimatePresence>
-        <Footer />
+        {!isReels && <Footer />}
       </div>
     </AppProvider>
   );
