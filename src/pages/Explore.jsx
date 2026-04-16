@@ -4,12 +4,12 @@ import { useApp } from '../AppContext';
 import CourseCard from '../components/CourseCard';
 
 const categories = [
-  { id: 'all', name: 'Neural Index' },
-  { id: 'Machine Learning', name: 'Machine Learning' },
-  { id: 'Deep Learning', name: 'Deep Learning' },
-  { id: 'Generative AI', name: 'Generative AI' },
-  { id: 'AI Applications', name: 'AI Applications' },
-  { id: 'Prompt Engineering', name: 'Prompt Eng.' }
+  { id: 'all',                 name: 'All Modules' },
+  { id: 'Machine Learning',   name: 'Machine Learning' },
+  { id: 'Deep Learning',      name: 'Deep Learning' },
+  { id: 'Generative AI',      name: 'Generative AI' },
+  { id: 'Prompt Engineering', name: 'Prompt Eng.' },
+  { id: 'AI Applications',    name: 'AI Applications' },
 ];
 
 export default function Explore() {
@@ -55,12 +55,16 @@ export default function Explore() {
             
             <div className="flex items-center gap-12">
               <div className="flex flex-col">
-                <span className="clash text-[32px] font-bold text-white">2.4k+</span>
+                <span className="clash text-[32px] font-bold text-white">30</span>
                 <span className="text-[9px] font-bold tracking-widest text-[var(--text-muted)] uppercase">MODULES_ONLINE</span>
               </div>
               <div className="flex flex-col border-l border-white/10 pl-12">
-                <span className="clash text-[32px] font-bold text-[var(--accent-primary)]">142k</span>
-                <span className="text-[9px] font-bold tracking-widest text-[var(--text-muted)] uppercase">NODES_SYNCED</span>
+                <span className="clash text-[32px] font-bold text-[var(--accent-primary)]">DAIR.AI</span>
+                <span className="text-[9px] font-bold tracking-widest text-[var(--text-muted)] uppercase">SOURCE_PARTNER</span>
+              </div>
+              <div className="flex flex-col border-l border-white/10 pl-12">
+                <span className="clash text-[32px] font-bold text-white">FREE</span>
+                <span className="text-[9px] font-bold tracking-widest text-[var(--text-muted)] uppercase">ALL_COURSES</span>
               </div>
             </div>
           </motion.div>
