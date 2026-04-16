@@ -177,9 +177,31 @@ export function AppProvider({ children }) {
   const sendMessage = async (text, modelId = 'gpt4o') => {
     const userMsg = { role: 'user', content: text };
     setMessages(prev => [...prev, userMsg, { role: 'thinking' }]);
-    await new Promise(r => setTimeout(r, 900 + Math.random() * 600));
-    const reply = generateAiReply(text, modelId);
-    setMessages(prev => [...prev.filter(m => m.role !== 'thinking'), { role: 'assistant', content: reply, model: modelId }]);
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, modelId }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.error || 'Live model request failed');
+      }
+
+      setMessages(prev => [
+        ...prev.filter(m => m.role !== 'thinking'),
+        { role: 'assistant', content: data.reply, model: modelId },
+      ]);
+    } catch (error) {
+      const fallback = generateAiReply(text, modelId);
+      const warning = `Live AI is temporarily unavailable (${error.message}). Using offline assistant response.\n\n`;
+      setMessages(prev => [
+        ...prev.filter(m => m.role !== 'thinking'),
+        { role: 'assistant', content: `${warning}${fallback}`, model: modelId },
+      ]);
+    }
   };
 
   const courses = COURSES.map(c => ({ ...c, enrolled: enrolledCourses.includes(c.id) }));
