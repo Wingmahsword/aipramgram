@@ -240,18 +240,23 @@ export default function Playground() {
                 className="flex-1 bg-transparent text-white text-[14px] font-medium resize-none outline-none placeholder-white/25 leading-relaxed"
                 style={{ maxHeight: '120px', scrollbarWidth: 'none' }}
               />
-              <motion.button
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.92 }}
-                onClick={handleSend}
-                disabled={!input.trim() || sending}
-                className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-all"
-                style={{ background: input.trim() && !sending ? activeModel.color : 'rgba(255,255,255,0.08)' }}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                </svg>
-              </motion.button>
+               <motion.button
+                 whileHover={{ scale: 1.08 }}
+                 whileTap={{ scale: 0.92 }}
+                 onClick={handleSend}
+                 disabled={!input.trim() || sending}
+                 className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-all"
+                 style={{ background: input.trim() && !sending ? activeModel.color : 'rgba(255,255,255,0.08)' }}
+                 aria-label={sending ? "Sending message..." : "Send message"}
+               >
+                 {sending ? (
+                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                 ) : (
+                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                     <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                   </svg>
+                 )}
+               </motion.button>
             </div>
             <div className="text-[9px] text-white/20 font-mono mt-2 text-center tracking-widest uppercase">
               Press Enter to send · Shift+Enter for new line · Answers by {activeModel.name}

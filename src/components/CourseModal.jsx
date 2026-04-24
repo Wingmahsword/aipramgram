@@ -37,8 +37,13 @@ export default function CourseModal({ course, onClose }) {
   const { enrollCourse, enrolledCourses } = useApp();
   const enrolled = enrolledCourses.includes(course.id);
   const level = LEVEL_COLORS[course.level] || LEVEL_COLORS.Intermediate;
+  const [enrolling, setEnrolling] = React.useState(false);
 
-  const handleEnroll = () => { enrollCourse(course.id); };
+  const handleEnroll = () => {
+    setEnrolling(true);
+    enrollCourse(course.id);
+    setTimeout(() => setEnrolling(false), 500);
+  };
   const handleWatch  = () => { if (course.url) window.open(course.url, '_blank'); };
 
   return createPortal(
@@ -157,29 +162,34 @@ export default function CourseModal({ course, onClose }) {
               <div className="text-[9px] text-[var(--accent-serif)] font-bold tracking-widest uppercase">One-time · Lifetime access</div>
             </div>
             <div className="flex gap-3 w-full sm:w-auto">
+               <motion.button
+                 whileHover={{ scale: 1.04, backgroundColor: 'rgba(239,68,68,0.9)' }}
+                 whileTap={{ scale: 0.97 }}
+                 onClick={handleWatch}
+                 aria-label="Watch course on YouTube"
+                 className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-red-600/70 border border-red-500/30 text-white text-[11px] font-bold tracking-[0.15em] uppercase rounded-xl transition-all"
+               >
+                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                 </svg>
+                 YouTube
+               </motion.button>
               <motion.button
-                whileHover={{ scale: 1.04, backgroundColor: 'rgba(239,68,68,0.9)' }}
-                whileTap={{ scale: 0.97 }}
-                onClick={handleWatch}
-                className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-red-600/70 border border-red-500/30 text-white text-[11px] font-bold tracking-[0.15em] uppercase rounded-xl transition-all"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-                YouTube
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.04, backgroundColor: enrolled ? 'rgba(124,58,237,0.5)' : 'var(--accent-primary)' }}
-                whileTap={{ scale: 0.97 }}
-                onClick={handleEnroll}
-                className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 sm:px-8 sm:py-3.5 text-white text-[10px] sm:text-[11px] font-bold tracking-[0.12em] sm:tracking-[0.15em] uppercase rounded-xl border transition-all ${
-                  enrolled
-                    ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/25 text-[var(--accent-serif)]'
-                    : 'border-[var(--accent-primary)]/35 bg-[var(--accent-primary)]/30 backdrop-blur-md sm:border-transparent sm:bg-[var(--accent-primary)] sm:shadow-[0_0_24px_rgba(124,58,237,0.4)]'
-                }`}
-              >
-                {enrolled ? '✓ ENROLLED' : `ENROLL — ₹${course.price}`}
-              </motion.button>
+                 whileHover={{ scale: 1.04, backgroundColor: enrolled ? 'rgba(124,58,237,0.5)' : 'var(--accent-primary)' }}
+                 whileTap={{ scale: 0.97 }}
+                 onClick={handleEnroll}
+                 disabled={enrolling}
+                 aria-label={enrolled ? "Already enrolled" : `Enroll in ${course.title} for ₹${course.price}`}
+                 className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 sm:px-8 sm:py-3.5 text-white text-[10px] sm:text-[11px] font-bold tracking-[0.12em] sm:tracking-[0.15em] uppercase rounded-xl border transition-all ${
+                   enrolled
+                     ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/25 text-[var(--accent-serif)]'
+                     : 'border-[var(--accent-primary)]/35 bg-[var(--accent-primary)]/30 backdrop-blur-md sm:border-transparent sm:bg-[var(--accent-primary)] sm:shadow-[0_0_24px_rgba(124,58,237,0.4)]'
+                 } ${enrolling ? 'opacity-70' : ''}`}
+               >
+                 {enrolling ? (
+                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                 ) : enrolled ? '✓ ENROLLED' : `ENROLL — ₹${course.price}`}
+               </motion.button>
             </div>
           </div>
         </motion.div>

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useMemo } from 'react';
 
 // Full ML YouTube Courses — synced from https://github.com/dair-ai/ML-YouTube-Courses
 const COURSES = [
@@ -204,10 +204,7 @@ export function AppProvider({ children }) {
     }
   };
 
-  const courses = COURSES.map(c => ({ ...c, enrolled: enrolledCourses.includes(c.id) }));
-  const reels = REELS.map(r => ({ ...r, liked: likedReels.includes(r.id), saved: savedReels.includes(r.id) }));
-  const creators = CREATORS.map(c => ({ ...c, following: followingCreators.includes(c.id) }));
-  const comprehensiveModules = COMPREHENSIVE_MODULES;
+  // These are now memoized above with useMemo
 
   return (
     <AppContext.Provider value={{

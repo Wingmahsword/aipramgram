@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useVideoTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -82,10 +82,24 @@ function Scene() {
 }
 
 export default function WebGLBackground() {
+  const [isVisible, setIsVisible] = useState(!document.hidden);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsVisible(!document.hidden);
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
   return (
     <div className="fixed inset-0 z-0 pointer-events-none bg-[#020617]">
       <div className="atmospheric-glow" />
-      <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 2]}>
+      <Canvas
+        camera={{ position: [0, 0, 1] }}
+        dpr={[1, 1.5]}
+        frameloop={isVisible ? 'always' : 'never'}
+      >
         <Scene />
       </Canvas>
     </div>

@@ -17,7 +17,7 @@ const LEVEL_COLORS = {
   Advanced:     'text-violet-400 bg-violet-400/10 border-violet-400/20',
 };
 
-export default function CourseCard({ course }) {
+const CourseCard = React.memo(function CourseCard({ course }) {
   const { enrollCourse, enrolledCourses } = useApp();
   const enrolled = enrolledCourses.includes(course.id);
   const [modalOpen, setModalOpen] = useState(false);
@@ -92,10 +92,12 @@ export default function CourseCard({ course }) {
           }`}
         >
           <iconify-icon icon={enrolled ? 'lucide:check' : 'lucide:plus'} class="text-[14px]"></iconify-icon>
-          {enrolled ? 'ENROLLED' : 'ENROLL'}
+           {enrolled ? 'ENROLLED' : 'ENROLL'}
         </motion.button>
       </div>
     </motion.div>
     </>
   );
-}
+});
+
+export default CourseCard;

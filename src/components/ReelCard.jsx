@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../AppContext';
 
-export default function ReelCard({ reel, isActive, isBuffered }) {
+const ReelCard = React.memo(function ReelCard({ reel, isActive, isBuffered }) {
   const { isMuted, setIsMuted } = useApp();
   const [isPaused, setIsPaused] = useState(false);
   const [showPauseIcon, setShowPauseIcon] = useState(false);
@@ -201,8 +201,10 @@ export default function ReelCard({ reel, isActive, isBuffered }) {
                className="h-full bg-gradient-to-r from-[var(--accent-primary)] to-indigo-500 shadow-[0_0_15px_var(--accent-primary)]"
              />
           </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+         </div>
+       </div>
+     </motion.div>
+   );
+});
+
+export default ReelCard;
