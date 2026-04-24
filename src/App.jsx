@@ -5,9 +5,12 @@ import { AppProvider } from './AppContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import Courses from './pages/Courses';
 import Explore from './pages/Explore';
+import Creators from './pages/Creators';
 import Reels from './pages/Reels';
 import Playground from './pages/Playground';
+import Profile from './pages/Profile';
 
 function App() {
   const location = useLocation();
@@ -20,9 +23,12 @@ function App() {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
-            <Route path="/courses" element={<Explore />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/creators" element={<Creators />} />
             <Route path="/reels" element={<Reels />} />
             <Route path="/playground" element={<Playground />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </AnimatePresence>
         {!isReels && <Footer />}
