@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
 const COURSES = [
   { id: 'course_ng_ml', title: 'Machine Learning Specialization', instructor: 'Andrew Ng', instructorAvatar: 'AN', partner: 'coursera', category: 'Machine Learning', level: 'Beginner', duration: '3 months', lessons: 92, progress: 0, rating: 4.9, students: 1200000, thumbnail: 'ml', description: 'The most popular ML course on earth. Andrew Ng teaches supervised learning, unsupervised learning, and best practices.', tags: ['Python', 'Supervised Learning', 'Neural Networks', 'TensorFlow'], rewardCoins: 150 },
@@ -45,21 +45,74 @@ export function AppProvider({ children }) {
   const [enrolledCourses, setEnrolledCourses] = useState(['course_google_genai']);
   const [likedReels, setLikedReels] = useState(['r2']);
   const [savedReels, setSavedReels] = useState(['r3']);
-  const [followingCreators, setFollowingCreators] = useState(['c2']);
-  const [coins, setCoins] = useState(100);
-  const [hasClaimedWelcome, setHasClaimedWelcome] = useState(false);
+  const [followingCreators, setFollowingCreators] = useState(() => {
+    const saved = localStorage.getItem('aipramgram_followingCreators');
+    return saved ? JSON.parse(saved) : ['c2'];
+  });
+  const [coins, setCoins] = useState(() => {
+    const saved = localStorage.getItem('aipramgram_coins');
+    return saved ? parseInt(saved) : 100;
+  });
+  const [hasClaimedWelcome, setHasClaimedWelcome] = useState(() => {
+    const saved = localStorage.getItem('aipramgram_hasClaimedWelcome');
+    return saved ? JSON.parse(saved) : false;
+  });
   const [toasts, setToasts] = useState([]);
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: "Hey! I'm your AI learning assistant 🤖 Ask me anything about machine learning, prompt engineering, deep learning, or any AI topic. I'm here to help you learn!" }
-  ]);
-  const [courseFilter, setCourseFilter] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [messages, setMessages] = useState(() => {
+    const saved = localStorage.getItem('aipramgram_messages');
+    return saved ? JSON.parse(saved) : [
+      { role: 'assistant', content: "Hey! I'm your AI learning assistant 🤖 Ask me anything about machine learning, prompt engineering, deep learning, or any AI topic. I'm here to help you learn!" }
+    ];
+  });
+  const [completedLessons, setCompletedLessons] = useState(() => {
+    const saved = localStorage.getItem('aipramgram_completedLessons');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [quizScores, setQuizScores] = useState(() => {
+    const saved = localStorage.getItem('aipramgram_quizScores');
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  // Persist state to localStorage
+  useEffect(() => { localStorage.setItem('aipramgram_enrolledCourses', JSON.stringify(enrolledCourses)); }, [enrolledCourses]);
+  useEffect(() => { localStorage.setItem('aipramgram_likedReels', JSON.stringify(likedReels)); }, [likedReels]);
+  useEffect(() => { localStorage.setItem('aipramgram_savedReels', JSON.stringify(savedReels)); }, [savedReels]);
+  useEffect(() => { localStorage.setItem('aipramgram_followingCreators', JSON.stringify(followingCreators)); }, [followingCreators]);
+  useEffect(() => { localStorage.setItem('aipramgram_coins', coins.toString()); }, [coins]);
+  useEffect(() => { localStorage.setItem('aipramgram_hasClaimedWelcome', JSON.stringify(hasClaimedWelcome)); }, [hasClaimedWelcome]);
+  useEffect(() => { localStorage.setItem('aipramgram_messages', JSON.stringify(messages)); }, [messages]);
+  useEffect(() => { localStorage.setItem('aipramgram_completedLessons', JSON.stringify(completedLessons)); }, [completedLessons]);
+  useEffect(() => { localStorage.setItem('aipramgram_quizScores', JSON.stringify(quizScores)); }, [quizScores]);
+
+  const toastTimeoutsRef = useRef({});
 
   const addToast = (text, icon = '✅') => {
     const id = Date.now();
     setToasts(prev => [...prev, { id, text, icon }]);
-    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 3500);
+
+    // Clear existing timeout for this toast if any
+    if (toastTimeoutsRef.current[id]) {
+      clearTimeout(toastTimeoutsRef.current[id]);
+    }
+
+    // Set new timeout
+    toastTimeoutsRef.current[id] = setTimeout(() => {
+      setToasts(prev => prev.filter(t => t.id !== id));
+      delete toastTimeoutsRef.current[id];
+    }, 3500);
   };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Clear all pending timeouts
+      Object.values(toastTimeoutsRef.current).forEach(clearTimeout);
+      toastTimeoutsRef.current = {};
+    };
+  }, []);
+
+  const [courseFilter, setCourseFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const claimWelcomeBonus = () => {
     setCoins(c => c + 100);
@@ -102,7 +155,8 @@ export function AppProvider({ children }) {
       courses, reels, creators, coins, hasClaimedWelcome, messages, toasts,
       courseFilter, setCourseFilter, searchQuery, setSearchQuery,
       claimWelcomeBonus, toggleLike, toggleSave, toggleFollow, enrollCourse, sendMessage,
-      enrolledCourses, likedReels, savedReels, followingCreators
+      enrolledCourses, likedReels, savedReels, followingCreators,
+      completedLessons, setCompletedLessons, quizScores, setQuizScores
     }}>
       {children}
     </AppContext.Provider>
