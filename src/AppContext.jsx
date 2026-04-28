@@ -138,12 +138,34 @@ export function AppProvider({ children }) {
     addToast(`+${reward} coins earned for enrolling in "${course?.title}"!`, '🪙');
     return { coinsEarned: reward };
   };
-  const sendMessage = async (text) => {
+  const sendMessage = async (text, modelId = 'gpt4o') => {
     const userMsg = { role: 'user', content: text };
     setMessages(prev => [...prev, userMsg, { role: 'thinking' }]);
-    await new Promise(r => setTimeout(r, 900 + Math.random() * 600));
-    const reply = AI_RESPONSES[Math.floor(Math.random() * AI_RESPONSES.length)];
-    setMessages(prev => [...prev.filter(m => m.role !== 'thinking'), { role: 'assistant', content: reply }]);
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, modelId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('API request failed');
+      }
+
+      const data = await response.json();
+      setMessages(prev => [
+        ...prev.filter(m => m.role !== 'thinking'),
+        { role: 'assitant', content: data.reply, model: modelId },
+      ]);
+    } catch (error) {
+      // Fallback to mock if API fails
+      const reply = AI_RESPONSES[Math.floor(Math.random() * AI_RESPONSES.length)];
+      setMessages(prev => [
+        ...prev.filter(m => m.role !== 'thinking'),
+        { role: 'assitant', content: `[Offline Mode] ${reply}`, model: modelId },
+      ]);
+    }
   };
 
   const courses = COURSES.map(c => ({ ...c, enrolled: enrolledCourses.includes(c.id) }));
